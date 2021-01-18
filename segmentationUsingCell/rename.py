@@ -5,7 +5,7 @@ im_dir = "/Users/sneha/Desktop/mni/cell_bodiez_BIG"
 file_ext = {'.png'}
 file_list = [f for f in os.listdir(im_dir) if len(f) >= 4 and f[-4:] in file_ext]
 save_dir = "/Users/sneha/Desktop/mni/cell_bodiez_standard_BIG"
-
+fol_name = "fol1_"
 def main():
     for file in file_list:
         im = Image.open(f'{im_dir}/{file}')
@@ -20,7 +20,7 @@ def cntrcrop(im, file, dim1, dim2):
 
     im_cropped = im.crop((left, upper,right,lower))
     print(im_cropped.size)
-    im_cropped.save(save_dir + "/" + file_name + file_ext)
+    im_cropped.save(save_dir + "/" + fol_name + file_name + file_ext)
 
 if __name__ == '__main__':
     main()
