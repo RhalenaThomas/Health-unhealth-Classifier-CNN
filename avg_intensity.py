@@ -3,16 +3,15 @@ import os
 import pandas as pd
 import sys 
 
-# TODO Make batch, plate, control measurements valid
+# TODO Make control measurements valid
 
 def batch():
-    input_paths = str(sys.argv)
     rootdir = str(sys.argv[1])
     csv_path = str(sys.argv[2])
+    batch = str(sys.argv[3])
+    plate = str(sys.argv[4])
     output=dict()
     control_or_no = []
-    batch=[]
-    plate=[]
     paths=[]
     paths = os.listdir(rootdir)
     for path in paths:
@@ -22,17 +21,9 @@ def batch():
                 control_or_no.append('Y')
             else:
                 control_or_no.append('N')
-            if 'd2' in path:
-                batch.append(1)
-            else:
-                batch.append(0)
-            if 'd0' in path:
-                plate.append('idk')
-            else:
-                plate.append('proof of concept')
             get_avg(output, full_path)
 
-    put_dict_in_csv(output, csv_path, control_or_no, batch, plate)
+    put_dict_in_csv(output, control_or_no, batch, plate, csv_path)
 
 def get_avg(output, file_path): 
 
@@ -43,15 +34,14 @@ def get_avg(output, file_path):
     avg_color = imgraycp.getpixel((0, 0))
     output[file_path] = avg_color
 
-def put_dict_in_csv(output, csv_path, control_or_no, batch, plate): 
+def put_dict_in_csv(output, control_or_no, batch, plate, csv_path): 
     df = pd.DataFrame.from_dict(data=output, orient='index', columns=['Intensity'])
     df['Control'] = control_or_no
-    df['Batch'] = batch
-    df['Plate'] = plate
-    result = df.to_csv(path_or_buf=csv_path)
+    name=csv_path + '/AvgIntensity_Batch_' + batch + '_Plate_' + plate + '.csv'
+    result = df.to_csv(path_or_buf=name, index_label='Image')
 
 def main(): 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 5:
         sys.exit('yo, those are some wack positional arguments. usage: avg_intensity.py global-path-dir-ims-are-in where-and-what-csv-should-be')
     batch()
 
