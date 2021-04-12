@@ -1,0 +1,11 @@
+TO USE DB:
+NOTE: must have database write permissions for this!
+
+copy simpleinsert.sh into a folder where you can get into the database (ie can use "psql model-db" and get the psql command line)
+
+then use these commands:
+chmod 700 simpleinsert.sh 
+./simpleinsert.sh
+
+If you run into an error, vi logLast.sql and you can see the sql query!! To check old sets if you update sets, check oldSets.txt. Also, the simpleinsert is meant to be easy to read (even if you don't have any history of shell-scripting) so you can also look at that.  
+
